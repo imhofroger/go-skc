@@ -7,19 +7,19 @@ import (
 	"github.com/imhofroger/go-skc/models"
 )
 
-type CreateentryInput struct {
+type CreateEntryInput struct {
 	Title  string `json:"title" binding:"required"`
 	Artist string `json:"artist" binding:"required"`
 }
 
-type UpdateentryInput struct {
+type UpdateEntryInput struct {
 	Title  string `json:"title"`
 	Artist string `json:"artist"`
 }
 
 // GET /entries
 // Find all entries
-func Findentries(c *gin.Context) {
+func FindEntries(c *gin.Context) {
 	var entry []models.entry
 	models.DB.Find(&entries)
 
@@ -28,7 +28,7 @@ func Findentries(c *gin.Context) {
 
 // GET /entries/:id
 // Find a entry
-func Findentry(c *gin.Context) {
+func FindEntry(c *gin.Context) {
 	// Get model if exist
 	var entry models.entry
 	if err := models.DB.Where("id = ?", c.Param("id")).First(&entry).Error; err != nil {
@@ -41,7 +41,7 @@ func Findentry(c *gin.Context) {
 
 // POST /entries
 // Create new entry
-func Createentry(c *gin.Context) {
+func CreateEntry(c *gin.Context) {
 	// Validate input
 	var input CreateentryInput
 	if err := c.ShouldBindJSON(&input); err != nil {
@@ -58,7 +58,7 @@ func Createentry(c *gin.Context) {
 
 // PATCH /entries/:id
 // Update a entry
-func Updateentry(c *gin.Context) {
+func UpdateEntry(c *gin.Context) {
 	// Get model if exist
 	var entry models.entry
 	if err := models.DB.Where("id = ?", c.Param("id")).First(&entry).Error; err != nil {
@@ -67,7 +67,7 @@ func Updateentry(c *gin.Context) {
 	}
 
 	// Validate input
-	var input UpdateentryInput
+	var input UpdateEntryInput
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
